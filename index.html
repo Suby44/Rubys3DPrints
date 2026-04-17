@@ -1,0 +1,526 @@
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
+
+const container = {
+  hidden: {},
+  show: {
+    transition: {
+      staggerChildren: 0.12,
+    },
+  },
+};
+
+const rise = {
+  hidden: { opacity: 0, y: 50 },
+  show: { opacity: 1, y: 0 },
+};
+
+const fade = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1 },
+};
+
+function SectionHeading({ eyebrow, title, text }) {
+  return (
+    <motion.div
+      variants={container}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, amount: 0.25 }}
+      className="max-w-3xl"
+    >
+      <motion.p variants={rise} transition={{ duration: 0.6 }} className="text-sm uppercase tracking-[0.28em] text-[#ff8b86]/80">
+        {eyebrow}
+      </motion.p>
+      <motion.h2 variants={rise} transition={{ duration: 0.7 }} className="mt-4 text-3xl font-semibold tracking-tight text-white md:text-5xl">
+        {title}
+      </motion.h2>
+      {text ? (
+        <motion.p variants={rise} transition={{ duration: 0.7 }} className="mt-5 text-lg leading-8 text-white/68">
+          {text}
+        </motion.p>
+      ) : null}
+    </motion.div>
+  );
+}
+
+function FloatingGrid() {
+  return (
+    <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:58px_58px] opacity-[0.08]" />
+      <div className="absolute left-[8%] top-[16%] h-32 w-32 rounded-full bg-[#ff4a43]/10 blur-3xl" />
+      <div className="absolute right-[10%] top-[8%] h-40 w-40 rounded-full bg-white/6 blur-3xl" />
+      <div className="absolute bottom-[8%] left-[35%] h-44 w-44 rounded-full bg-[#ff4a43]/8 blur-3xl" />
+    </div>
+  );
+}
+
+function FuturisticProductVisual() {
+  return (
+    <div className="relative overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(180deg,#121821,#0d1117)] p-6 shadow-[0_30px_120px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,74,67,0.16),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.05),transparent_30%)]" />
+      <motion.div
+        animate={{ y: ["-10%", "110%"] }}
+        transition={{ duration: 3.8, repeat: Infinity, ease: "linear" }}
+        className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-[linear-gradient(180deg,rgba(255,90,84,0),rgba(255,90,84,0.16),rgba(255,90,84,0))] blur-xl"
+      />
+
+      <div className="relative">
+        <div className="flex items-center justify-between text-xs uppercase tracking-[0.24em] text-white/42">
+          <span>Visual Build Flow</span>
+          <span>Rubys3DPrints</span>
+        </div>
+
+        <div className="mt-8 grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
+          <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.03] p-5">
+            <div className="relative flex aspect-square items-center justify-center overflow-hidden rounded-[1.4rem] border border-white/10 bg-[radial-gradient(circle,rgba(255,74,67,0.12),transparent_45%),linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))]">
+              <div className="absolute h-[78%] w-[78%] rounded-full border border-[#ff4a43]/18" />
+              <div className="absolute h-[58%] w-[58%] rounded-full border border-white/10" />
+              <div className="absolute h-[38%] w-[38%] rounded-full border border-[#ff4a43]/25" />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[68%] w-[68%] rounded-full border border-dashed border-white/12"
+              />
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 24, repeat: Infinity, ease: "linear" }}
+                className="absolute h-[48%] w-[48%] rounded-full border border-dashed border-[#ff4a43]/18"
+              />
+              <motion.div
+                animate={{ y: [0, -10, 0], rotate: [10, 6, 10] }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+                className="relative h-40 w-40 rounded-[2rem] border border-white/15 bg-[linear-gradient(145deg,#2e3947,#141922)] shadow-2xl"
+              >
+                <div className="absolute inset-4 rounded-[1.25rem] border border-white/10 bg-[linear-gradient(145deg,rgba(255,74,67,0.18),rgba(255,255,255,0.04))]" />
+                <div className="absolute -right-4 top-10 h-10 w-10 rounded-xl border border-[#ff4a43]/25 bg-[#ff4a43]/10" />
+                <div className="absolute -left-3 bottom-8 h-12 w-4 rounded-full bg-white/10" />
+              </motion.div>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              ["01", "Idea", "Sketch, screenshot, file, or problem"],
+              ["02", "Design", "We shape it into a printable solution"],
+              ["03", "Product", "Prototype or finished part delivered"],
+            ].map(([num, title, text]) => (
+              <div key={num} className="rounded-[1.4rem] border border-white/10 bg-black/20 p-4">
+                <div className="text-xs uppercase tracking-[0.22em] text-[#ff8b86]/75">{num}</div>
+                <div className="mt-2 text-lg font-medium text-white">{title}</div>
+                <div className="mt-2 text-sm leading-7 text-white/62">{text}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function Rubys3DPrintsWebsite() {
+  const logoSrc = "data:image/png;base64,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";
+
+  const capabilities = [
+    {
+      title: "Concept Development",
+      text: "Come with a rough idea, sketch, screenshot, or problem. We help shape it into something printable and useful.",
+    },
+    {
+      title: "Print-Ready File Service",
+      text: "Already have an STL, STEP, OBJ, or finished design? Send the file and we can print it directly without needing the full design process.",
+    },
+    {
+      title: "Prototype Iteration",
+      text: "Fast printed versions for checking fit, testing function, improving design, and moving ideas forward quickly.",
+    },
+    {
+      title: "Custom Functional Parts",
+      text: "One-off brackets, enclosures, adapters, mounts, and problem-solving parts built for real-world use.",
+    },
+  ];
+
+  const workflow = [
+    "Idea",
+    "Design",
+    "Prototype",
+    "Refine",
+    "Print",
+    "Deliver",
+  ];
+
+  const projects = [
+    {
+      title: "Brackets & mounts",
+      tag: "Functional",
+      desc: "Purpose-built parts that solve fitment, mounting, and packaging problems.",
+      img: "https://images.unsplash.com/photo-1615874959474-d609969a20ed?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      title: "Prototype housings",
+      tag: "Development",
+      desc: "Quick concept enclosures for product testing, form studies, and design validation.",
+      img: "https://images.unsplash.com/photo-1611516491426-03025e6043c1?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      title: "Custom accessories",
+      tag: "Consumer",
+      desc: "Clean, personalized pieces designed around a specific use, style, or idea.",
+      img: "https://images.unsplash.com/photo-1581091012184-5c5f4c1c1f7c?q=80&w=1200&auto=format&fit=crop"
+    },
+    {
+      title: "Short-run kits",
+      tag: "Production",
+      desc: "Consistent small-batch sets for teams, products, and repeat-use applications.",
+      img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop"
+    },
+  ];
+
+  const stats = [
+    ["01", "Idea-first workflow"],
+    ["02", "File-ready printing available"],
+    ["03", "Prototype to final part"],
+  ];
+
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 180]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.2]);
+  const panelY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+
+  return (
+    <div className="min-h-screen overflow-x-hidden bg-[#090c10] text-white">
+      <section ref={heroRef} className="relative min-h-[120vh] overflow-hidden border-b border-white/10 bg-[linear-gradient(180deg,#090c10_0%,#0d1218_55%,#090c10_100%)]">
+        <FloatingGrid />
+
+        <motion.div style={{ y: heroY, opacity: heroOpacity }} className="absolute inset-0">
+          <div className="absolute left-[8%] top-[18%] h-72 w-72 rounded-full bg-[#ff4a43]/14 blur-[120px]" />
+          <div className="absolute right-[6%] top-[12%] h-80 w-80 rounded-full bg-white/8 blur-[140px]" />
+          <div className="absolute bottom-[12%] left-[38%] h-80 w-80 rounded-full bg-[#ff4a43]/10 blur-[140px]" />
+        </motion.div>
+
+        <div className="relative z-10 mx-auto max-w-7xl px-6 pt-6 md:px-10">
+          <motion.nav
+            initial={{ opacity: 0, y: -18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="flex items-center justify-between rounded-full border border-white/10 bg-white/[0.03] px-4 py-3 backdrop-blur-xl"
+          >
+            <div className="flex items-center gap-3">
+              <img src={logoSrc} alt="Rubys 3D Prints logo" className="h-11 w-11 rounded-full object-contain" />
+              <div>
+                <div className="text-sm font-semibold uppercase tracking-[0.18em] text-white">Rubys 3D</div>
+                <div className="text-xs uppercase tracking-[0.3em] text-white/45">Prints</div>
+              </div>
+            </div>
+            <div className="hidden items-center gap-6 text-sm text-white/70 md:flex">
+              <a href="#capabilities" className="transition hover:text-white">Capabilities</a>
+              <a href="#work" className="transition hover:text-white">Work</a>
+              <a href="#process" className="transition hover:text-white">Process</a>
+              <a href="#contact" className="transition hover:text-white">Contact</a>
+            </div>
+          </motion.nav>
+        </div>
+
+        <div className="relative z-10 mx-auto grid max-w-7xl gap-14 px-6 pb-24 pt-16 md:px-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:pb-32 lg:pt-24">
+          <motion.div
+            variants={container}
+            initial="hidden"
+            animate="show"
+            className="max-w-3xl"
+          >
+            <motion.div variants={rise} transition={{ duration: 0.6 }} className="inline-flex items-center gap-2 rounded-full border border-[#ff4a43]/20 bg-white/[0.04] px-4 py-2 text-xs font-medium uppercase tracking-[0.28em] text-[#ff8b86]">
+              <span className="h-2 w-2 rounded-full bg-[#ff4a43]" />
+              Design • Prototype • Print
+            </motion.div>
+
+            <motion.h1 variants={rise} transition={{ duration: 0.8 }} className="mt-8 text-5xl font-semibold leading-[0.95] tracking-tight text-white md:text-7xl lg:text-[5.5rem]">
+              Build the
+              <span className="mt-2 block bg-gradient-to-r from-white via-[#ffd6d4] to-[#ff8b86] bg-clip-text text-transparent">
+                idea first.
+              </span>
+            </motion.h1>
+
+            <motion.p variants={rise} transition={{ duration: 0.8 }} className="mt-8 max-w-2xl text-lg leading-8 text-white/68 md:text-xl">
+              rubys3dprints helps turn rough concepts into finished products through design support, rapid prototyping, and custom 3D printing. You can come with a file, sketch, screenshot, or just a problem to solve — or send an existing print-ready file and have it produced directly.
+            </motion.p>
+
+            <motion.div variants={rise} transition={{ duration: 0.8 }} className="mt-10 flex flex-wrap gap-4">
+              <a href="#contact" className="rounded-full bg-[#ff4a43] px-7 py-3.5 text-sm font-medium text-white transition hover:scale-[1.03] hover:bg-[#ff5d57]">
+                Start a Project
+              </a>
+              <a href="#process" className="rounded-full border border-white/15 bg-white/[0.02] px-7 py-3.5 text-sm font-medium text-white/90 transition hover:bg-white/[0.05]">
+                See the Process
+              </a>
+            </motion.div>
+
+            <motion.div variants={container} transition={{ duration: 0.8 }} className="mt-14 grid max-w-2xl gap-4 sm:grid-cols-3">
+              {stats.map(([num, label]) => (
+                <motion.div key={num} variants={rise} transition={{ duration: 0.65 }} className="rounded-[1.5rem] border border-white/10 bg-white/[0.03] p-5 backdrop-blur-xl">
+                  <div className="text-xs uppercase tracking-[0.24em] text-[#ff8b86]/75">{num}</div>
+                  <div className="mt-3 text-base font-medium text-white">{label}</div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+
+          <motion.div style={{ y: panelY }} className="relative">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+            >
+              <FuturisticProductVisual />
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      <section className="relative border-b border-white/10 bg-[#090c10] py-24 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <SectionHeading
+            eyebrow="What We Do"
+            title="A 3D printing company built around both design support and direct printing."
+            text="The strongest part of your offer is flexibility. Some customers need help moving from idea to design to prototype, while others already have a finished file and simply need high-quality printing."
+          />
+
+          <motion.div
+            variants={container}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, amount: 0.2 }}
+            className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4"
+          >
+            {capabilities.map((item) => (
+              <motion.div variants={rise} transition={{ duration: 0.65 }} key={item.title} className="group relative overflow-hidden rounded-[1.8rem] border border-white/10 bg-white/[0.03] p-7 transition hover:-translate-y-1">
+                <div className="absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_top_right,rgba(255,74,67,0.14),transparent_35%)]" />
+                <div className="relative">
+                  <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-[linear-gradient(145deg,rgba(255,74,67,0.18),rgba(255,255,255,0.08))] text-sm font-semibold text-[#ffd6d4]">
+                    +
+                  </div>
+                  <h3 className="text-xl font-medium text-white">{item.title}</h3>
+                  <p className="mt-4 text-sm leading-7 text-white/65">{item.text}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <section id="work" className="relative border-b border-white/10 bg-[linear-gradient(180deg,#090c10_0%,#0d1218_100%)] py-24 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            <SectionHeading
+              eyebrow="Project Types"
+              title="The site now feels more like a cinematic product studio."
+              text="That reference site uses big spacing, layered panels, dramatic gradients, and scroll energy. This version brings that same level of presence into a 3D printing brand." 
+            />
+            <a href="#contact" className="text-sm text-white/70 underline underline-offset-4 transition hover:text-white">
+              Start your idea
+            </a>
+          </div>
+
+          <div className="mt-16 grid gap-6 md:grid-cols-2">
+            {projects.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 50, scale: 0.97 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.75, ease: "easeOut", delay: index * 0.08 }}
+                className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03]"
+              >
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,74,67,0.18),transparent_26%),linear-gradient(135deg,#141a22,#0d1117_55%,#111722)] transition duration-500 group-hover:scale-[1.03]" />
+                <div className="relative aspect-[16/11] p-6">
+                  <div className="flex h-full flex-col justify-between rounded-[1.6rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.03),rgba(255,255,255,0.01))] p-6 backdrop-blur-xl">
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs uppercase tracking-[0.24em] text-white/40">Project 0{index + 1}</div>
+                      <div className="rounded-full border border-[#ff4a43]/20 bg-[#ff4a43]/10 px-3 py-1 text-xs text-[#ffd6d4]/80">
+                        {item.tag}
+                      </div>
+                    </div>
+
+                    <div>
+                      <div className="mb-6 h-40 overflow-hidden rounded-[1.4rem] border border-white/10">
+                        <img src={item.img} alt={item.title} className="h-full w-full object-cover transition duration-500 group-hover:scale-110" />
+                      </div>
+                      <h3 className="text-2xl font-medium text-white">{item.title}</h3>
+                      <p className="mt-3 max-w-md text-sm leading-7 text-white/65">{item.desc}</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="process" className="relative border-b border-white/10 bg-[#090c10] py-24 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <SectionHeading
+            eyebrow="Process"
+            title="Two simple ways to work with rubys3dprints."
+            text="Customers can either start with an idea and get design help, or upload a finished file and go straight to printing."
+          />
+
+          <div className="mt-16 grid gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+            <motion.div
+              initial={{ opacity: 0, x: -40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-7"
+            >
+              <div className="text-xs uppercase tracking-[0.24em] text-[#ff8b86]/75">Process overview</div>
+              <div className="mt-6 space-y-4">
+                {[
+                  ["01", "Share the idea or file"],
+                  ["02", "Choose design help or direct print"],
+                  ["03", "Prototype if needed"],
+                  ["04", "Print the final version"],
+                ].map(([num, label], index) => (
+                  <motion.div
+                    key={num}
+                    initial={{ opacity: 0, y: 24 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.55, ease: "easeOut", delay: index * 0.08 }}
+                    className="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/20 px-4 py-4"
+                  >
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full border border-[#ff4a43]/25 bg-[#ff4a43]/10 text-sm font-medium text-[#ffd6d4]">
+                      {num}
+                    </div>
+                    <div className="text-base font-medium text-white">{label}</div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.2 }}
+              className="grid gap-6 md:grid-cols-2"
+            >
+              {[
+                {
+                  n: "01",
+                  title: "Start with an idea",
+                  text: "Send a sketch, screenshot, reference, or rough description if you need help creating the part from scratch.",
+                },
+                {
+                  n: "02",
+                  title: "Or send a finished file",
+                  text: "If you already have a print-ready STL, STEP, OBJ, or similar file, it can go straight into production without the full design process.",
+                },
+                {
+                  n: "03",
+                  title: "Prototype if needed",
+                  text: "For custom-developed parts, a prototype can be printed first to check fit, form, and function before finalizing.",
+                },
+                {
+                  n: "04",
+                  title: "Get the final print",
+                  text: "Once everything is ready, the finished version is printed and prepared for delivery or pickup.",
+                },
+              ].map((item) => (
+                <motion.div key={item.n} variants={rise} transition={{ duration: 0.7 }} className="rounded-[1.8rem] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015))] p-7">
+                  <div className="text-sm uppercase tracking-[0.24em] text-[#ff8b86]/75">{item.n}</div>
+                  <h3 className="mt-4 text-xl font-medium text-white">{item.title}</h3>
+                  <p className="mt-4 text-sm leading-7 text-white/65">{item.text}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-b border-white/10 bg-[linear-gradient(180deg,#0a0d11_0%,#0d1218_100%)] py-24 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <div className="grid gap-8 lg:grid-cols-[1fr_0.95fr] lg:items-center">
+            <SectionHeading
+              eyebrow="Why It Works"
+              title="This direction feels more like a high-end modern industrial website."
+              text="The reference site is successful because it uses scale, motion, breathing room, and strong visual hierarchy. This version uses those same principles for your brand and your offer."
+            />
+
+            <motion.div
+              variants={container}
+              initial="hidden"
+              whileInView="show"
+              viewport={{ once: true, amount: 0.2 }}
+              className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-6"
+            >
+              {[
+                "You can come with only an idea",
+                "Design help is part of the offer",
+                "Prototype first, then refine",
+                "End with a usable final product",
+              ].map((item) => (
+                <motion.div key={item} variants={rise} transition={{ duration: 0.55 }} className="mb-3 last:mb-0 rounded-xl border border-white/10 bg-black/20 p-4 text-sm text-white/82">
+                  {item}
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" className="relative bg-[#090c10] py-24 md:py-28">
+        <div className="mx-auto max-w-7xl px-6 md:px-10">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(255,74,67,0.18),transparent_30%),linear-gradient(135deg,#121821,#090d11)] p-8 shadow-[0_30px_120px_rgba(0,0,0,0.4)] md:p-12"
+          >
+            <div className="grid gap-10 lg:grid-cols-[1fr_0.95fr] lg:items-center">
+              <div>
+                <p className="text-sm uppercase tracking-[0.28em] text-[#ff8b86]/80">Start Your Project</p>
+                <h2 className="mt-4 text-4xl font-semibold tracking-tight text-white md:text-6xl">
+                  Got an idea?
+                  <span className="mt-2 block text-white/88">Let’s build it.</span>
+                </h2>
+                <p className="mt-6 max-w-xl text-lg leading-8 text-white/68">
+                  Send a concept, file, screenshot, or rough description. rubys3dprints can help with design, prototyping, and final production — or simply print an existing file if your design is already finished.
+                </p>
+              </div>
+
+              <div className="rounded-[1.8rem] border border-white/10 bg-white/[0.04] p-6 backdrop-blur-2xl">
+                <div className="grid gap-4">
+                  <input className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35" placeholder="Your name" />
+                  <input className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35" placeholder="Email address" />
+                  <input className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35" placeholder="What are you trying to make or print?" />
+                  <textarea className="min-h-[120px] rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35" placeholder="Describe your idea, prototype, product, or the file you want printed" />
+                  <button className="rounded-full bg-[#ff4a43] px-6 py-3 text-sm font-medium text-white transition hover:scale-[1.02] hover:bg-[#ff5d57]">
+                    Request a Quote
+                  </button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <footer className="border-t border-white/10 bg-[#090c10] px-6 py-8 md:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 text-sm text-white/45 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-3">
+            <img src={logoSrc} alt="Rubys 3D Prints logo" className="h-10 w-10 rounded-full object-contain" />
+            <div>
+              <div className="text-sm font-semibold uppercase tracking-[0.18em] text-white">Rubys 3D</div>
+              <div className="text-xs uppercase tracking-[0.3em] text-white/45">Prints</div>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-5">
+            <a href="#capabilities" className="hover:text-white/75">Capabilities</a>
+            <a href="#work" className="hover:text-white/75">Work</a>
+            <a href="#process" className="hover:text-white/75">Process</a>
+            <a href="#contact" className="hover:text-white/75">Contact</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
